@@ -59,7 +59,8 @@ class Bot(Configurable):
         :return:    None
         """
 
-        self.update_submodules()
+        # self.update_submodules()
+
         print('\n[~] Started main bot loop')
         self.thread.start()
 
@@ -81,7 +82,7 @@ class Bot(Configurable):
                 # Buff and feed pets
                 self.buff.main()
                 pet_settings = config.gui.settings.pets
-                auto_feed = pet_settings.auto_feed.get()
+                auto_feed = pet_settings.debug.get()
                 num_pets = pet_settings.num_pets.get()
                 now = time.time()
                 if auto_feed and now - last_fed > 1200 / num_pets:
