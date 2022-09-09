@@ -5,6 +5,7 @@ from src.gui.settings.keybindings import KeyBindings
 from src.gui.settings.pets import Pets
 from src.gui.interfaces import Tab, Frame
 from src.common import config
+from  src.gui.settings.configuration import Configuration
 
 
 class Settings(Tab):
@@ -18,6 +19,8 @@ class Settings(Tab):
         column1.grid(row=0, column=1, sticky=tk.N, padx=10, pady=10)
         self.controls = KeyBindings(column1, 'Auto Maple Controls', config.listener)
         self.controls.pack(side=tk.TOP, fill='x', expand=True)
+        self.configuration = Configuration(column1)
+        self.configuration.pack(side=tk.TOP, fill='x', expand=True)
 
         column2 = Frame(self)
         column2.grid(row=0, column=2, sticky=tk.N, padx=10, pady=10)
