@@ -1,4 +1,5 @@
 """A module for detecting and notifying the user of dangerous in-game events."""
+import logging
 
 from src.common import config, utils
 import time
@@ -8,8 +9,11 @@ import pygame
 import threading
 import numpy as np
 import keyboard as kb
+
+from src.common.vkeys import press
 from src.routine.components import Point
 
+_logger = logging.getLogger(__name__)
 
 # A rune's symbol on the minimap
 RUNE_RANGES = (
@@ -27,6 +31,9 @@ OTHER_TEMPLATE = cv2.cvtColor(other_filtered, cv2.COLOR_BGR2GRAY)
 
 # The Elite Boss's warning sign
 ELITE_TEMPLATE = cv2.imread('assets/elite_template.jpg', 0)
+
+# The dialog sign
+DIALOG_TEMPLATE = cv2.imread('assets/dialog.png', 0)
 
 
 def get_alert_path(name):
@@ -75,6 +82,13 @@ class Notifier:
                 elite = utils.multi_match(elite_frame, ELITE_TEMPLATE, threshold=0.9)
                 if len(elite) > 0:
                     self._alert('siren')
+
+                dialog_frame = frame[2 * height // 4:3*height // 4, width // 4: 2 * width // 4]
+                dialog = utils.multi_match(dialog_frame, DIALOG_TEMPLATE, threshold=0.9)
+                _logger.debug("dialog matches {}".format(len(dialog)))
+                if len(elite) > 0:
+                    self._ping('ding', volume=0.75)
+                    press('esc')
 
                 # Check for other players entering the map
                 filtered = utils.filter_color(minimap, OTHER_RANGES)
