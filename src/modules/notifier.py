@@ -83,12 +83,13 @@ class Notifier:
                 if len(elite) > 0:
                     self._alert('siren')
 
-                dialog_frame = frame[2 * height // 4:3*height // 4, width // 4: 2 * width // 4]
+                dialog_frame = frame[480:503, 425:525]
                 dialog = utils.multi_match(dialog_frame, DIALOG_TEMPLATE, threshold=0.9)
                 _logger.debug("dialog matches {}".format(len(dialog)))
-                if len(elite) > 0:
+                if len(dialog) > 0:
+                    press('esc', 1)
+                    time.sleep(0.1)
                     self._ping('ding', volume=0.75)
-                    press('esc')
 
                 # Check for other players entering the map
                 filtered = utils.filter_color(minimap, OTHER_RANGES)
