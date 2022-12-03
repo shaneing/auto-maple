@@ -83,13 +83,13 @@ class Notifier:
                     self._alert('siren')
 
                 # Check for elite warning
-                elite_frame = frame[height // 4:3 * height // 4, width // 4:3 * width // 4]
-                elite = utils.multi_match(elite_frame, ELITE_TEMPLATE, threshold=0.9)
-                if len(elite) > 0:
-                    self._alert('siren')
+                # elite_frame = frame[height // 4:3 * height // 4, width // 4:3 * width // 4]
+                # elite = utils.multi_match(elite_frame, ELITE_TEMPLATE, threshold=0.9)
+                # if len(elite) > 0:
+                #     self._alert('siren')
 
-                dialog_frame = frame[480:503, 425:525]
-                dialog = utils.multi_match(dialog_frame, DIALOG_TEMPLATE, threshold=0.9)
+                dialog_frame = frame[450:550, 400:550]
+                dialog = utils.multi_match(dialog_frame, DIALOG_TEMPLATE, threshold=0.8)
                 _logger.debug("dialog matches {}".format(len(dialog)))
                 if len(dialog) > 0:
                     press('esc', 1)
