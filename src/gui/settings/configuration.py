@@ -40,6 +40,7 @@ class Configuration(LabelFrame):
             _logger.debug("Opened debug")
         else:
             set_log_level("INFO")
+            _logger.info("Closed debug")
 
         self.configuration_settings.set('DEBUG', self.debug.get())
         self.configuration_settings.save_config()
