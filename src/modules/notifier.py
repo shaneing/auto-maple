@@ -30,7 +30,7 @@ other_filtered = utils.filter_color(cv2.imread('assets/other_template.png'), OTH
 OTHER_TEMPLATE = cv2.cvtColor(other_filtered, cv2.COLOR_BGR2GRAY)
 
 # Guide member players' symbols on the minimap
-guide_member_filtered = utils.filter_color(cv2.imread('assets/other2_template.png'), OTHER_RANGES)
+guide_member_filtered = utils.filter_color(cv2.imread('assets/guide_member_template.png'), OTHER_RANGES)
 GUIDE_MEMBER_TEMPLATE = cv2.cvtColor(guide_member_filtered, cv2.COLOR_BGR2GRAY)
 
 # The Elite Boss's warning sign
