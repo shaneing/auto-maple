@@ -29,6 +29,10 @@ OTHER_RANGES = (
 other_filtered = utils.filter_color(cv2.imread('assets/other_template.png'), OTHER_RANGES)
 OTHER_TEMPLATE = cv2.cvtColor(other_filtered, cv2.COLOR_BGR2GRAY)
 
+# Guide member players' symbols on the minimap
+guide_member_filtered = utils.filter_color(cv2.imread('assets/other2_template.png'), OTHER_RANGES)
+GUIDE_MEMBER_TEMPLATE = cv2.cvtColor(guide_member_filtered, cv2.COLOR_BGR2GRAY)
+
 # The Elite Boss's warning sign
 ELITE_TEMPLATE = cv2.imread('assets/elite_template.jpg', 0)
 
@@ -65,6 +69,7 @@ class Notifier:
     def _main(self):
         self.ready = True
         prev_others = 0
+        prev_guide_member = 0
         rune_start_time = time.time()
         while True:
             if config.enabled:
@@ -99,6 +104,14 @@ class Notifier:
                     if others > prev_others:
                         self._ping('ding')
                     prev_others = others
+
+                # Check for guide member players entering the map
+                guide_member = len(utils.multi_match(filtered, GUIDE_MEMBER_TEMPLATE, threshold=0.5))
+                config.stage_fright = guide_member > 0
+                if guide_member != prev_guide_member:
+                    if guide_member > prev_guide_member:
+                        self._ping('ding')
+                    prev_guide_member = guide_member
 
                 # Check for rune
                 now = time.time()
