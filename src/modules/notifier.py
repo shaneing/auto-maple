@@ -30,8 +30,7 @@ other_filtered = utils.filter_color(cv2.imread('assets/other_template.png'), OTH
 OTHER_TEMPLATE = cv2.cvtColor(other_filtered, cv2.COLOR_BGR2GRAY)
 
 # Guide member players' symbols on the minimap
-guide_member_filtered = utils.filter_color(cv2.imread('assets/guide_member_template.png'), OTHER_RANGES)
-GUIDE_MEMBER_TEMPLATE = cv2.cvtColor(guide_member_filtered, cv2.COLOR_BGR2GRAY)
+GUIDE_MEMBER_TEMPLATE = cv2.imread('assets/guide_member_template.png', 0)
 
 # The Elite Boss's warning sign
 ELITE_TEMPLATE = cv2.imread('assets/elite_template.jpg', 0)
@@ -100,14 +99,16 @@ class Notifier:
                 filtered = utils.filter_color(minimap, OTHER_RANGES)
                 others = len(utils.multi_match(filtered, OTHER_TEMPLATE, threshold=0.5))
                 config.stage_fright = others > 0
+                _logger.debug("others matches {}".format(others))
                 if others != prev_others:
                     if others > prev_others:
                         self._ping('ding')
                     prev_others = others
 
                 # Check for guide member players entering the map
-                guide_member = len(utils.multi_match(filtered, GUIDE_MEMBER_TEMPLATE, threshold=0.5))
+                guide_member = len(utils.multi_match(minimap, GUIDE_MEMBER_TEMPLATE, threshold=0.95))
                 config.stage_fright = guide_member > 0
+                _logger.debug("guide member matches {}".format(guide_member))
                 if guide_member != prev_guide_member:
                     if guide_member > prev_guide_member:
                         self._ping('ding')
